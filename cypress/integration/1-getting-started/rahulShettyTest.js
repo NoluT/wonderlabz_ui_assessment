@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe("UI Test Automation",() =>{
     it ("Loads the website and verify the url",() =>{
 
@@ -19,17 +21,17 @@ describe("UI Test Automation",() =>{
         });
     it ("Type in the field ‘South’ and select ‘South Africa’ from the list of options",() =>{
 
-             cy.xpath('//*[@id="autocomplete"]').type("South Africa")
-             cy.get('#dropdown-class-example').select("Option2");
+             cy.xpath('//*[@id="autocomplete"]').type("South")
+             cy.get('.ui-menu-item').contains("South Africa").click();
+             
 
          });
     it ("Clear the field and type ‘Republic’ and select the first option listed",() =>{
 
               cy.xpath('//*[@id="autocomplete"]').clear() // Clear text input
               cy.xpath('//*[@id="autocomplete"]').type("Republic")
-              cy.get('#dropdown-class-example').select("Option1");
-
-
+              cy.wait(2000)
+              cy.get('ul.ui-menu').as('countries').contains("Central African Republic").click();
          });
     it ("Check all the checkboxes and validate that they are all checked ",() =>{
 
@@ -40,8 +42,8 @@ describe("UI Test Automation",() =>{
     it ("Uncheck the first checkbox and validate that the other two remain checked",() =>{
 
             cy.xpath('//*[@id="checkBoxOption1"]').uncheck()
-            cy.xpath('//*[@id="checkBoxOption2"]').uncheck()
-            cy.xpath('//*[@id="checkBoxOption3"]').uncheck()
+            // cy.xpath('//*[@id="checkBoxOption2"]').uncheck()
+            // cy.xpath('//*[@id="checkBoxOption3"]').uncheck()
 
         });
 
@@ -72,13 +74,15 @@ describe("UI Test Automation",() =>{
 
     it ("Validate that the page has an iframe",() =>{
 
-
-           });
+    });
 
     it ("Interact with any element within the iframe",() =>{
-
-
+      cy.wait(5000)
+      cy.get('iframe').then($element => {
+        const $body = $element.contents().find('body')
+      
+        let stripe = cy.wrap($body)
+        stripe.find('.register-btn').click();
+      })
       });
-
-
     });
